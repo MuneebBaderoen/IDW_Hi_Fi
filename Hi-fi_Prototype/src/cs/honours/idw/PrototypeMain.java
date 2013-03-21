@@ -2,6 +2,7 @@ package cs.honours.idw;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class PrototypeMain implements ApplicationListener {
@@ -77,6 +79,10 @@ public class PrototypeMain implements ApplicationListener {
 
 		libtex.updatePos(new Vector2(1,1));
 		libtex.getSprite().setBounds(libtex.position.x, libtex.position.y, 200, 200);
+		Gdx.input.isKeyPressed(Keys.BACK){
+
+
+		}
 	}
 
 	public void draw(){
@@ -91,7 +97,34 @@ public class PrototypeMain implements ApplicationListener {
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void resize(int width, int height)
+	{
+		// calculate new viewport
+		float aspectRatio = (float)width/(float)height;
+		float scale = 1f;
+		Vector2 crop = new Vector2(0f, 0f);
+
+		if(aspectRatio > ASPECT_RATIO)
+		{
+			scale = (float)height/(float)VIRTUAL_HEIGHT;
+			crop.x = (width - VIRTUAL_WIDTH*scale)/2f;
+		}
+		else if(aspectRatio < ASPECT_RATIO)
+		{
+			scale = (float)width/(float)VIRTUAL_WIDTH;
+			crop.y = (height - VIRTUAL_HEIGHT*scale)/2f;
+		}
+		else
+		{
+			scale = (float)width/(float)VIRTUAL_WIDTH;
+		}
+
+		float w = (float)VIRTUAL_WIDTH*scale;
+		float h = (float)VIRTUAL_HEIGHT*scale;
+
+		Rectangle viewport = new Rectangle(crop.x, crop.y, w, h);
+		Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
+				(int) viewport.width, (int) viewport.height);
 	}
 
 	@Override

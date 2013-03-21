@@ -1,8 +1,15 @@
 package cs.honours.idw;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.*;
 
 public class InputManager implements GestureListener{
+	
+	public InputManager(){
+		
+		
+	}
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
