@@ -1,5 +1,7 @@
 package cs.honours.idw;
 
+import cs.honours.idw.reader.*;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -11,8 +13,11 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
+import cs.honours.idw.reader.GameObject;
 
 public class PrototypeMain implements ApplicationListener {
 	private OrthographicCamera camera;
@@ -31,8 +36,8 @@ public class PrototypeMain implements ApplicationListener {
 
 
 	GameObject libtex;
-
-
+	
+	InputManager inputHandler = new InputManager();
 
 
 	@Override
@@ -40,7 +45,7 @@ public class PrototypeMain implements ApplicationListener {
 		viewportWidth = Gdx.graphics.getWidth();
 		viewportHeight = Gdx.graphics.getHeight();
 
-		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
+		camera = new OrthographicCamera(1, VIRTUAL_HEIGHT/VIRTUAL_WIDTH);
 		camera.setToOrtho(true, viewportWidth, viewportHeight);
 
 		spriteBatch = new SpriteBatch();
@@ -58,8 +63,10 @@ public class PrototypeMain implements ApplicationListener {
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 		 */
 
-		libtex=new GameObject(new Vector2(20,50));
+		libtex=new GameObject(new Vector2(32,32));
 		libtex.setTexture(Gdx.files.internal("data/BlueBall.png"));
+		
+		Gdx.input.setInputProcessor(new GestureDetector(inputHandler));
 
 	}
 
@@ -77,8 +84,8 @@ public class PrototypeMain implements ApplicationListener {
 
 	public void update(){
 
-		libtex.updatePos(new Vector2(1,1));
-		libtex.getSprite().setBounds(libtex.position.x, libtex.position.y, 200, 200);
+		//libtex.updatePos(new Vector2(1,1));
+		libtex.getSprite().setBounds(libtex.getPos().x, libtex.getPos().y, 200, 200);
 		Gdx.input.isKeyPressed(Keys.BACK);
 
 
