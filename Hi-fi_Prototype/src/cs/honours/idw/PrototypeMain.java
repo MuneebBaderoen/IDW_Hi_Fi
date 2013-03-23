@@ -79,10 +79,10 @@ public class PrototypeMain implements ApplicationListener {
 
 		libtex.updatePos(new Vector2(1,1));
 		libtex.getSprite().setBounds(libtex.position.x, libtex.position.y, 200, 200);
-		Gdx.input.isKeyPressed(Keys.BACK){
+		Gdx.input.isKeyPressed(Keys.BACK);
 
 
-		}
+		
 	}
 
 	public void draw(){
