@@ -33,15 +33,20 @@ public class PrototypeMain implements ApplicationListener {
 	private static final int VIRTUAL_WIDTH = 320;
 	private static final int VIRTUAL_HEIGHT = 480;
 	private static final float ASPECT_RATIO = (float)VIRTUAL_WIDTH/(float)VIRTUAL_HEIGHT;
-
-
-	GameObject libtex;
 	
-	InputManager inputHandler = new InputManager();
+	TextureManager textureManager;
+	InputManager inputManager;
+	ScreenManager screenManager;
+	
 
 
 	@Override
-	public void create() {		
+	public void create() {	
+		textureManager = new TextureManager();
+		inputManager = new InputManager();
+		screenManager = new ScreenManager();
+		
+		
 		viewportWidth = Gdx.graphics.getWidth();
 		viewportHeight = Gdx.graphics.getHeight();
 
@@ -63,10 +68,8 @@ public class PrototypeMain implements ApplicationListener {
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 		 */
 
-		libtex=new GameObject(new Vector2(32,32));
-		libtex.setTexture(Gdx.files.internal("data/BlueBall.png"));
-		
-		Gdx.input.setInputProcessor(new GestureDetector(inputHandler));
+	
+		Gdx.input.setInputProcessor(new GestureDetector(inputManager));
 
 	}
 
@@ -85,8 +88,11 @@ public class PrototypeMain implements ApplicationListener {
 	public void update(){
 
 		//libtex.updatePos(new Vector2(1,1));
-		libtex.getSprite().setBounds(libtex.getPos().x, libtex.getPos().y, 200, 200);
-		Gdx.input.isKeyPressed(Keys.BACK);
+		screenManager.update();
+	
+		if(Gdx.input.isKeyPressed(Keys.BACK)){
+			screenManager.toPreviousScreen();
+		}
 
 
 		
@@ -99,7 +105,8 @@ public class PrototypeMain implements ApplicationListener {
 
 
 		spriteBatch.begin();
-		libtex.getSprite().draw(spriteBatch);
+		screenManager.draw(spriteBatch);
+		//libtex.getSprite().draw(spriteBatch);
 		spriteBatch.end();
 	}
 

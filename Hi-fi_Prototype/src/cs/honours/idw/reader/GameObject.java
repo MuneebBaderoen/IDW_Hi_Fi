@@ -15,10 +15,28 @@ public class GameObject {
 	public Sprite sprite;	
 	public float rotationAngle = 0f;
 
-	ScreenManager.screenState nextTapState,	nextLongPressState,nextSwipeLeftState,nextSwipeRightState;
+	ScreenManager.screenState nextTapState = null,
+	nextLongPressState= null,
+	nextSwipeLeftState= null,
+	nextSwipeRightState= null;
 	
 	public GameObject(Vector2 pos){
 		position = pos;		
+	}
+	
+	public GameObject(Vector2 pos, Texture newTex){
+		
+		
+		
+		
+		
+		position = pos;
+		setTexture(newTex);
+		setNextTapState(nextTapState);			
+		setNextLongPressState(nextLongPressState);		
+		setNextSwipeLeftState(nextSwipeLeftState);		
+		setNextSwipeRightState(nextSwipeRightState);
+			
 	}
 	
 	//Texture gets/sets
@@ -51,46 +69,43 @@ public class GameObject {
 		return sprite;		
 	}	
 	
+	//Reactions to user input
+	//Setting responses
+	public void setNextTapState(ScreenManager.screenState nextState){
+		nextTapState=nextState;	}
+	public void setNextLongPressState(ScreenManager.screenState nextState){
+		nextLongPressState=nextState;
+	}
+	public void setNextSwipeLeftState(ScreenManager.screenState nextState){
+		nextSwipeLeftState=nextState;
+	}
+	public void setNextSwipeRightState(ScreenManager.screenState nextState){
+		nextSwipeRightState=nextState;
+	}	
 	
-	public void setNextTapState(ScreenManager.screenState nextState){}
-	public void setNextLongPressState(ScreenManager.screenState nextState){}
-	public void setNextSwipeLeftState(ScreenManager.screenState nextState){}
-	public void setNextSwipeRightState(ScreenManager.screenState nextState){}
-	
-	
+	//Methods run by InputManager
 	public void onTap(){
 		ScreenManager.setState(nextTapState);
-	}
-	
+	}	
 	public void onLongPress(){
 		ScreenManager.setState(nextLongPressState);
-	}
-	
+	}	
 	public void onSwipeLeft(){
 		ScreenManager.setState(nextSwipeLeftState);
-	}
-	
+	}	
 	public void onSwipeRight(){
 		ScreenManager.setState(nextSwipeRightState);
 	}
 	
 		
 	//Bounding box gets/sets
-	protected void setBounds(){
-		boundingBox.width = tex.getWidth();
-		boundingBox.height = tex.getHeight();
-		boundingBox.x = position.x-boundingBox.width/2;
-		boundingBox.y = position.y-boundingBox.height/2;		
+	protected void setBounds(){			
 		sprite.setBounds(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 		sprite.setRotation(rotationAngle);
 		boundingBox=new Rectangle(sprite.getBoundingRectangle());
 	}
 	
-	protected void setNewBounds(Vector2 pos){
-		boundingBox.width = tex.getWidth();
-		boundingBox.height = tex.getHeight();
-		boundingBox.x = pos.x -boundingBox.width/2;
-		boundingBox.y = pos.y -boundingBox.height/2;
+	protected void setNewBounds(Vector2 pos){		
 		sprite.setBounds(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 		sprite.setRotation(rotationAngle);
 		boundingBox=new Rectangle(sprite.getBoundingRectangle());

@@ -5,10 +5,10 @@ public class ReaderScreen {
 	//private GameObject[] screenElements;
 	private LinkedList<GameObject> screenElements = new LinkedList<GameObject>();
 	private String name;
+	private ReaderScreen previousScreen;
 	
 	public ReaderScreen(){
-		
-		
+		previousScreen=this;		
 	}
 	
 	public void addScreenElement(GameObject elem){
@@ -18,5 +18,9 @@ public class ReaderScreen {
 	
 	public ListIterator<GameObject> getScreenElements(){
 		return screenElements.listIterator();		
+	}
+	
+	public ReaderScreen getPreviousScreen(){
+		return previousScreen;
 	}
 }

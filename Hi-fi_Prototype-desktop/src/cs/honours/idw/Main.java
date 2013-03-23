@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Hi-fi_Prototype";
-		cfg.useGL20 = false;
+		cfg.useGL20 = true;
 		cfg.width = 320;
 		cfg.height = 480;
 		
