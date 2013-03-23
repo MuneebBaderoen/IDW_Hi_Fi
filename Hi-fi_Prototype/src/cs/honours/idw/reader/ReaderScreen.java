@@ -4,6 +4,7 @@ import java.util.ListIterator;
 public class ReaderScreen {
 	//private GameObject[] screenElements;
 	private LinkedList<GameObject> screenElements = new LinkedList<GameObject>();
+	private String name;
 	
 	public ReaderScreen(){
 		

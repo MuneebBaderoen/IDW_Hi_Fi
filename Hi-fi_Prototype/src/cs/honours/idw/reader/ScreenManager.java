@@ -9,7 +9,7 @@ public class ScreenManager {
 	public enum screenState {HomeScreen, LoggedInScreen, LoginSkippedScreen, LibraryScreen, SearchScreen, ReadingScreen};
 	
 	
-	private screenState currentState = screenState.HomeScreen;
+	private static screenState currentState = screenState.HomeScreen;
 	
 	public ScreenManager(){
 		
@@ -18,6 +18,10 @@ public class ScreenManager {
 	
 	public screenState getState(){
 		return currentState;		
+	}
+	
+	public static void setState(screenState newState){
+		 currentState = newState;		
 	}
 	
 	public void update(){

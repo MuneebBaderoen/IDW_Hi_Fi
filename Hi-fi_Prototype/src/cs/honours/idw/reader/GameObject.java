@@ -8,11 +8,14 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 
 public class GameObject {
 	protected Vector2 position = new Vector2();
+	
 	private Texture tex; 
 	protected Rectangle boundingBox = new Rectangle();
+	
 	public Sprite sprite;	
 	public float rotationAngle = 0f;
-	public Vector2[] normals = new Vector2[4];
+
+	ScreenManager.screenState nextTapState,	nextLongPressState,nextSwipeLeftState,nextSwipeRightState;
 	
 	public GameObject(Vector2 pos){
 		position = pos;		
@@ -47,6 +50,29 @@ public class GameObject {
 	public Sprite getSprite(){
 		return sprite;		
 	}	
+	
+	
+	public void setNextTapState(ScreenManager.screenState nextState){}
+	public void setNextLongPressState(ScreenManager.screenState nextState){}
+	public void setNextSwipeLeftState(ScreenManager.screenState nextState){}
+	public void setNextSwipeRightState(ScreenManager.screenState nextState){}
+	
+	
+	public void onTap(){
+		ScreenManager.setState(nextTapState);
+	}
+	
+	public void onLongPress(){
+		ScreenManager.setState(nextLongPressState);
+	}
+	
+	public void onSwipeLeft(){
+		ScreenManager.setState(nextSwipeLeftState);
+	}
+	
+	public void onSwipeRight(){
+		ScreenManager.setState(nextSwipeRightState);
+	}
 	
 		
 	//Bounding box gets/sets
