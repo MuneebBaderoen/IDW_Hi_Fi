@@ -9,22 +9,43 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import cs.honours.idw.reader.GameObject;
+import cs.honours.idw.reader.LibraryScreen;
 import cs.honours.idw.reader.ReaderScreen;
 
 
 
 public class ScreenManager {
 
-	public enum screenState {HomeScreen, LoggedInScreen, LoginSkippedScreen, CurrentlyReadingScreen, LibraryScreen, SearchScreen, ReadingScreen, ReadingWithToolbar};
+	public enum screenState {
+		//Login states
+		HomeScreen,
+		LoggedInScreen,
+		LoginSkippedScreen,
+		CurrentlyReadingScreen, 
+		LibraryScreen, 		
+		//Library screen states
+		CategoryScreen, 	 
+		TitlesScreen,	
+		AuthorsScreen,	 
+		GenreScreen,	 
+		RecommendedScreen,	 
+		ReadLaterScreen,	 
+		RecentBooksScreen,
+		SearchScreen,
+		SearchAuthorScreen,
+		//Reading states		
+		ReadingScreen, 
+		ReadingWithToolbar
+	}
 
 
-	private static screenState currentState = screenState.HomeScreen;
+	public static screenState currentState = screenState.HomeScreen;
 
 	ReaderScreen homeScreen;
 	ReaderScreen currentlyReadingHomeScreen;
 	ReaderScreen loggedInScreen;
 	ReaderScreen loginSkippedScreen;
-	ReaderScreen libraryScreen;
+	LibraryScreen libraryScreen;
 	ReaderScreen searchScreen;
 	ReaderScreen readingScreen;
 
@@ -32,7 +53,7 @@ public class ScreenManager {
 
 	public static ReaderScreen currentScreen;
 	
-	public boolean currentlyReadingSomething = true;
+	public boolean currentlyReadingSomething = false;
 	public boolean toolbarActive = false;
 
 	public ScreenManager(){
@@ -43,14 +64,14 @@ public class ScreenManager {
 		//Not yet logged in
 
 
-		GameObject bottomSwipeBG = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryBG);		
+		GameObject bottomSwipeBG = new GameObject(new Vector2(0,800-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryBG);		
 		bottomSwipeBG.setNextTapState(screenState.LibraryScreen);
 		bottomSwipeBG.setNextSwipeLeftState(screenState.LibraryScreen);
 		
-		GameObject toLibrary = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryBG);		
+		GameObject toLibrary = new GameObject(new Vector2(0,800-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryBG);		
 		
 
-		GameObject toCurrentBook = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryBG);		
+		GameObject toCurrentBook = new GameObject(new Vector2(0,800-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryBG);		
 		toCurrentBook.setNextTapState(screenState.ReadingScreen);
 		toCurrentBook.setNextSwipeLeftState(screenState.ReadingScreen);
 
@@ -58,23 +79,25 @@ public class ScreenManager {
 
 		//Home screen before login
 		homeScreen=new ReaderScreen();	
+		homeScreen.setPreviousState(screenState.HomeScreen);
 		homeScreen.addScreenElement(bg);//
 		//homeScreen.addScreenElement(toLib);//
-		homeScreen.addScreenElement(new GameObject(new Vector2(70,60),TextureManager.welcome));
-		homeScreen.addScreenElement(new GameObject(new Vector2(70,110),TextureManager.loginUsername));
-		homeScreen.addScreenElement(new GameObject(new Vector2(70,160),TextureManager.loginPassword));
+		homeScreen.addScreenElement(new GameObject(new Vector2(90,90),TextureManager.welcome));
+		homeScreen.addScreenElement(new GameObject(new Vector2(90,170),TextureManager.loginUsername));
+		homeScreen.addScreenElement(new GameObject(new Vector2(90,250),TextureManager.loginPassword));
 
-		GameObject loginFB = new GameObject(new Vector2(70,210),TextureManager.loginFacebook);
+		GameObject loginFB = new GameObject(new Vector2(90,360),TextureManager.loginFacebook);
 		loginFB.setNextTapState(screenState.LoggedInScreen);
 		homeScreen.addScreenElement(loginFB);		
 
-		GameObject loginSk = new GameObject(new Vector2(70,260),TextureManager.loginSkip);
+		GameObject loginSk = new GameObject(new Vector2(90,440),TextureManager.loginSkip);
 		loginSk.setNextTapState(screenState.LoginSkippedScreen);
 		homeScreen.addScreenElement(loginSk);
 
 		//Logged in Screen
 		loggedInScreen = new ReaderScreen();
 		loggedInScreen.setPreviousScreen(homeScreen);
+		loggedInScreen.setPreviousState(screenState.HomeScreen);
 		loggedInScreen.addScreenElement(bg);//
 		loggedInScreen.addScreenElement(new GameObject(new Vector2(70,60),TextureManager.welcomeMuneeb));
 		loggedInScreen.addScreenElement(new GameObject(new Vector2(60,120),TextureManager.loginUserPicture));
@@ -84,6 +107,7 @@ public class ScreenManager {
 
 		loginSkippedScreen = new ReaderScreen();
 		loginSkippedScreen.setPreviousScreen(homeScreen);
+		loginSkippedScreen.setPreviousState(screenState.HomeScreen);
 		loginSkippedScreen.addScreenElement(bg);//
 		loginSkippedScreen.addScreenElement(new GameObject(new Vector2(70,60),TextureManager.welcomeUser));
 		loginSkippedScreen.addScreenElement(new GameObject(new Vector2(60,120),TextureManager.loginUserPicture));
@@ -113,7 +137,8 @@ public class ScreenManager {
 
 		//Library Screen
 
-		libraryScreen=new ReaderScreen();
+		libraryScreen=new LibraryScreen();
+		
 		
 		//in book screen
 		
@@ -132,7 +157,11 @@ public class ScreenManager {
 	}
 
 	public void toPreviousScreen(){
+		try{
 		currentScreen = currentScreen.getPreviousScreen();
+		setState(currentScreen.getPreviousState());
+		}
+		catch(Exception e){}
 	}
 
 	public screenState getState(){
@@ -146,36 +175,20 @@ public class ScreenManager {
 
 	public void update(){
 		switch(currentState){
-		case HomeScreen:
-			System.out.println("HomeScreen");
+		case HomeScreen:			
 			currentScreen=homeScreen;
 			break;
-		case LoggedInScreen:
-			System.out.println("LoggedInScreen");
+		case LoggedInScreen:			
 			currentScreen=loggedInScreen;
 			break;
-		case LoginSkippedScreen:
-			System.out.println("Login Skipped Screen");
+		case LoginSkippedScreen:			
 			currentScreen=loginSkippedScreen;
 			break;
 		case CurrentlyReadingScreen:
 			System.out.println("CurrentlyReadingScreen");
-			break;
-		case LibraryScreen:
-			if(currentlyReadingSomething){
-				currentScreen = readingScreen;
-				currentState=screenState.ReadingScreen;
-			}
-			
-			else 
-				currentScreen=libraryScreen;
-			System.out.println("LibraryScreen");
-			break;
-		case SearchScreen:
-			System.out.println("SearchScreen");
-			break;
+			break;			
 		case ReadingScreen:
-			currentlyReadingSomething=true;
+			currentlyReadingSomething=true;			
 			System.out.println("ReadingScreen");
 			break;
 		case ReadingWithToolbar:	
@@ -185,6 +198,16 @@ public class ScreenManager {
 				System.out.println(toolbarActive);
 			System.out.println("ReadingScreen");
 			break;
+		default:
+			if(currentlyReadingSomething){
+				currentScreen = readingScreen;				
+				currentState=screenState.ReadingScreen;
+			}			
+			else {
+				currentScreen=libraryScreen;
+				libraryScreen.update();
+			}			
+			break;	
 		}
 	}
 
@@ -192,16 +215,16 @@ public class ScreenManager {
 		ListIterator<GameObject> iter = currentScreen.getScreenElements();
 		int count = 0;
 		while(iter.hasNext()){
-
 			iter.next().getSprite().draw(spriteBatch);
-
-
-			//g.getSprite().draw(spritebatch);
 		}
+		
+		
+		//Same bar, same action, different response and thus different foreground labels
 		if(currentState==screenState.LibraryScreen||currentState==screenState.LoginSkippedScreen||currentState==screenState.LoggedInScreen){
-			GameObject fg;
+			GameObject fg = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toolbarActivator);;
 			if(!currentlyReadingSomething){
-				 fg = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryFG);	
+				if(currentState!=screenState.LibraryScreen)
+					fg = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryFG);	
 			}
 			else 
 			{

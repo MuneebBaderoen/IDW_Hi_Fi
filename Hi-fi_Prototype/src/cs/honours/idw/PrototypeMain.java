@@ -33,15 +33,17 @@ public class PrototypeMain implements ApplicationListener {
 	float viewportWidth, viewportHeight;
 
 
-	private static final int VIRTUAL_WIDTH = 320;
-	private static final int VIRTUAL_HEIGHT = 480;
+	private static final int VIRTUAL_WIDTH = 480;
+	private static final int VIRTUAL_HEIGHT = 800;
 	private static final float ASPECT_RATIO = (float)VIRTUAL_WIDTH/(float)VIRTUAL_HEIGHT;
 
 	TextureManager textureManager;
 	InputManager inputManager;
 	ScreenManager screenManager;
 	public static Vector2 crop;
-	public static Rectangle viewport;
+	public static Rectangle viewport = new Rectangle(0,0,800,980);
+
+	public boolean backKeyDown = false;
 
 
 	@Override
@@ -54,15 +56,15 @@ public class PrototypeMain implements ApplicationListener {
 		viewportWidth = Gdx.graphics.getWidth();
 		viewportHeight = Gdx.graphics.getHeight();
 
-		camera = new OrthographicCamera(1, VIRTUAL_HEIGHT/VIRTUAL_WIDTH);
-		camera.setToOrtho(true, viewportWidth, viewportHeight);
+		camera = new OrthographicCamera(1, viewportHeight/viewportWidth);
+		camera.setToOrtho(true, 480, 800);
 
 		spriteBatch = new SpriteBatch();
 		spriteBatch.setProjectionMatrix(camera.combined);
 
-		
+		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setInputProcessor(new GestureDetector(inputManager));
-		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
 	}
 
 	@Override
@@ -83,7 +85,9 @@ public class PrototypeMain implements ApplicationListener {
 		screenManager.update();
 		//System.out.println("Touch position: ("+Gdx.input.getX()+", "+Gdx.input.getY()+")");
 
-
+		Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
+				(int) viewport.width, (int) viewport.height);
+		System.out.println(viewport);
 		if(!Gdx.input.isTouched()){
 			InputManager.isTouchDown=false;
 			//InputManager.currentInputState=null;
@@ -93,8 +97,14 @@ public class PrototypeMain implements ApplicationListener {
 			System.out.println(InputManager.currentInputState);
 
 		if(Gdx.input.isKeyPressed(Keys.BACK)){
-			screenManager.toPreviousScreen();
+			if(!backKeyDown){
+				screenManager.toPreviousScreen();
+				backKeyDown=true;
+			}
 		}
+		else
+			backKeyDown=false;
+
 
 
 
@@ -115,6 +125,7 @@ public class PrototypeMain implements ApplicationListener {
 	@Override
 	public void resize(int width, int height)
 	{
+		
 		// calculate new viewport
 		float aspectRatio = (float)width/(float)height;
 		float scale = 1f;
@@ -139,8 +150,8 @@ public class PrototypeMain implements ApplicationListener {
 		float h = (float)VIRTUAL_HEIGHT*scale;
 
 		viewport = new Rectangle(crop.x, crop.y, w, h);
-		Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
-				(int) viewport.width, (int) viewport.height);
+		
+
 	}
 
 	@Override

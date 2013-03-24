@@ -70,6 +70,8 @@ public class GameObject {
 		nextSwipeRightState=nextState;
 	}	
 	
+	
+	
 	//Methods run by InputManager
 	public void onTap(){
 		ScreenManager.setState(nextTapState);

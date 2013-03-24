@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class TextureManager {
 	//public static Texture _____ = new Texture(Gdx.files.internal(path));
 	public static Texture appBG = new Texture(Gdx.files.internal("homescreen/gradientBG.png"));
-	public static Texture toolbarActivator = new Texture(Gdx.files.internal("readerScreen/toolbarActivator.png"));
-
-	
+	public static Texture toolbarActivator = new Texture(Gdx.files.internal("readerScreen/toolbarActivator.png"));	
 	
 	public static Texture bookCoverBG = new Texture(Gdx.files.internal("homescreen/homeScreenBG.png"));
 	public static Texture bookCoverFG = new Texture(Gdx.files.internal("homescreen/homeScreenFG.png"));
@@ -30,6 +28,12 @@ public class TextureManager {
 
 	
 	
+	public static Texture searchBar = new Texture(Gdx.files.internal("libraryScreen/searchBar.png"));
+
+	public static Texture categoryBG = new Texture(Gdx.files.internal("libraryScreen/categoryBG.png"));
+
+	public static Texture bookBG = new Texture(Gdx.files.internal("libraryScreen/bookBG.png"));
+
 	
 	
 	
