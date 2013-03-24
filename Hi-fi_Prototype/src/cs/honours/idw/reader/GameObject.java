@@ -6,14 +6,17 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 
+import cs.honours.idw.reader.managers.ScreenManager;
+
 public class GameObject {
 	protected Vector2 position = new Vector2();
 	
 	private Texture tex; 
-	protected Rectangle boundingBox = new Rectangle();
+	protected Rectangle boundingBox;// = new Rectangle();
 	
 	public Sprite sprite;	
 	public float rotationAngle = 0f;
+	public float scale = 1f;
 
 	ScreenManager.screenState nextTapState = null,
 	nextLongPressState= null,
@@ -24,18 +27,12 @@ public class GameObject {
 		position = pos;		
 	}
 	
-	public GameObject(Vector2 pos, Texture newTex){
-		
-		
-		
-		
+	public GameObject(Vector2 pos, Texture newTex){	
 		
 		position = pos;
+		boundingBox = new Rectangle(pos.x,pos.y, newTex.getWidth(),newTex.getHeight());
 		setTexture(newTex);
-		setNextTapState(nextTapState);			
-		setNextLongPressState(nextLongPressState);		
-		setNextSwipeLeftState(nextSwipeLeftState);		
-		setNextSwipeRightState(nextSwipeRightState);
+		setPos(position);		
 			
 	}
 	
@@ -47,19 +44,9 @@ public class GameObject {
 		sprite = new Sprite(tex);
 		sprite.flip(false, true);
 		sprite.setRotation(rotationAngle);
-		tex.getTextureData().prepare();
+		sprite.setScale(scale);
 		
-		setBounds();
 	}
-	
-	public void setTexture(FileHandle dir){
-		tex = new Texture(dir);	
-		tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		sprite = new Sprite(tex);
-		sprite.flip(false, true);
-		sprite.setRotation(rotationAngle);		
-		setBounds();
-	}	
 
 	public Texture getTexture(){
 		return tex;
@@ -99,15 +86,17 @@ public class GameObject {
 	
 		
 	//Bounding box gets/sets
-	protected void setBounds(){			
+	public void setBounds(){			
 		sprite.setBounds(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 		sprite.setRotation(rotationAngle);
+		sprite.setScale(scale);
 		boundingBox=new Rectangle(sprite.getBoundingRectangle());
 	}
 	
-	protected void setNewBounds(Vector2 pos){		
+	public void setNewBounds(Vector2 pos){		
 		sprite.setBounds(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 		sprite.setRotation(rotationAngle);
+		sprite.setScale(scale);
 		boundingBox=new Rectangle(sprite.getBoundingRectangle());
 	}
 	
@@ -128,8 +117,8 @@ public class GameObject {
 	}
 	
 	public void setPos(Vector2 newPos){		
-		boundingBox.x = position.x-boundingBox.width/2;
-		boundingBox.y = position.y-boundingBox.height/2;
+		boundingBox.x = position.x;//-boundingBox.width/2;
+		boundingBox.y = position.y;//-boundingBox.height/2;
 		sprite.setBounds(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 	}
 	

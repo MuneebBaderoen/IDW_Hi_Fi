@@ -18,9 +18,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import cs.honours.idw.reader.GameObject;
+import cs.honours.idw.reader.managers.InputManager;
+import cs.honours.idw.reader.managers.ScreenManager;
+import cs.honours.idw.reader.managers.TextureManager;
 
 public class PrototypeMain implements ApplicationListener {
-	private OrthographicCamera camera;
+	public static OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
 	private Texture texture;
 	private Sprite sprite;
@@ -33,11 +36,12 @@ public class PrototypeMain implements ApplicationListener {
 	private static final int VIRTUAL_WIDTH = 320;
 	private static final int VIRTUAL_HEIGHT = 480;
 	private static final float ASPECT_RATIO = (float)VIRTUAL_WIDTH/(float)VIRTUAL_HEIGHT;
-	
+
 	TextureManager textureManager;
 	InputManager inputManager;
 	ScreenManager screenManager;
-	
+	public static Vector2 crop;
+	public static Rectangle viewport;
 
 
 	@Override
@@ -45,8 +49,8 @@ public class PrototypeMain implements ApplicationListener {
 		textureManager = new TextureManager();
 		inputManager = new InputManager();
 		screenManager = new ScreenManager();
-		
-		
+
+
 		viewportWidth = Gdx.graphics.getWidth();
 		viewportHeight = Gdx.graphics.getHeight();
 
@@ -56,26 +60,14 @@ public class PrototypeMain implements ApplicationListener {
 		spriteBatch = new SpriteBatch();
 		spriteBatch.setProjectionMatrix(camera.combined);
 
-		/*
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
-		 */
-
-	
 		Gdx.input.setInputProcessor(new GestureDetector(inputManager));
 
 	}
 
 	@Override
 	public void dispose() {
-
+		System.exit(0);
 
 	}
 
@@ -89,13 +81,23 @@ public class PrototypeMain implements ApplicationListener {
 
 		//libtex.updatePos(new Vector2(1,1));
 		screenManager.update();
-	
+		//System.out.println("Touch position: ("+Gdx.input.getX()+", "+Gdx.input.getY()+")");
+
+
+		if(!Gdx.input.isTouched()){
+			InputManager.isTouchDown=false;
+			//InputManager.currentInputState=null;
+			//
+		}
+		if(InputManager.currentInputState!=null)
+			System.out.println(InputManager.currentInputState);
+
 		if(Gdx.input.isKeyPressed(Keys.BACK)){
 			screenManager.toPreviousScreen();
 		}
 
 
-		
+
 	}
 
 	public void draw(){
@@ -116,7 +118,7 @@ public class PrototypeMain implements ApplicationListener {
 		// calculate new viewport
 		float aspectRatio = (float)width/(float)height;
 		float scale = 1f;
-		Vector2 crop = new Vector2(0f, 0f);
+		crop = new Vector2(0f, 0f);
 
 		if(aspectRatio > ASPECT_RATIO)
 		{
@@ -136,7 +138,7 @@ public class PrototypeMain implements ApplicationListener {
 		float w = (float)VIRTUAL_WIDTH*scale;
 		float h = (float)VIRTUAL_HEIGHT*scale;
 
-		Rectangle viewport = new Rectangle(crop.x, crop.y, w, h);
+		viewport = new Rectangle(crop.x, crop.y, w, h);
 		Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
 				(int) viewport.width, (int) viewport.height);
 	}
