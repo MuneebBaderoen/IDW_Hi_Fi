@@ -60,14 +60,14 @@ public class PrototypeMain implements ApplicationListener {
 		spriteBatch = new SpriteBatch();
 		spriteBatch.setProjectionMatrix(camera.combined);
 
-
+		
 		Gdx.input.setInputProcessor(new GestureDetector(inputManager));
-
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
 	@Override
 	public void dispose() {
-		System.exit(0);
+		//System.exit(0);
 
 	}
 

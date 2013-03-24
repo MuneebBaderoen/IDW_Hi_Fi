@@ -23,4 +23,8 @@ public class ReaderScreen {
 	public ReaderScreen getPreviousScreen(){
 		return previousScreen;
 	}
+	
+	public void setPreviousScreen(ReaderScreen s){
+		 previousScreen = s;
+	}
 }
