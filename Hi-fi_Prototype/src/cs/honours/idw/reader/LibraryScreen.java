@@ -23,11 +23,11 @@ public class LibraryScreen extends ReaderScreen {
 		SearchScreen,
 		SearchAuthorScreen}
 
-	public screenState currentLibraryState = screenState.CategoryScreen;
-	public ReaderScreen currentScreen;
+	public static screenState currentLibraryState = screenState.CategoryScreen;
+	public static ReaderScreen currentScreen;
 
 
-	ReaderScreen categoryScreen = new ReaderScreen();
+	public ReaderScreen categoryScreen = new ReaderScreen();
 
 	ReaderScreen titlesScreen = new ReaderScreen();
 	ReaderScreen authorsScreen = new ReaderScreen();
@@ -40,7 +40,8 @@ public class LibraryScreen extends ReaderScreen {
 
 	BookCollection collection = new BookCollection();
 
-	public LibraryScreen(){
+	public LibraryScreen(){	
+		//Library Screens
 		GameObject bg = new GameObject(new Vector2(0,0),TextureManager.appBG);
 
 		GameObject bottomSwipeBG = new GameObject(new Vector2(0,800-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryBG);		
@@ -51,60 +52,156 @@ public class LibraryScreen extends ReaderScreen {
 		GameObject searchBar = new GameObject(new Vector2(0,0), TextureManager.searchBar);
 		searchBar.setNextTapState(screenState.SearchScreen);
 
-
 		categoryScreen.addScreenElement(bg);
 		categoryScreen.addScreenElement(searchBar);
-
-
-
-
+		categoryScreen.setPreviousState(screenState.CategoryScreen);
 		for(int i = 0; i<6;i++){
 			Vector2 position = new Vector2(0,68+110*i);
 			GameObject catBG = new GameObject(position, TextureManager.categoryBG);
 			switch(i){
 			case 0:
 				catBG.setNextTapState(screenState.TitlesScreen);
-				categoryScreen.addScreenElement(new GameObject(position, TextureManager.));
+				categoryScreen.addScreenElement(catBG);
+				categoryScreen.addScreenElement(new GameObject(position, TextureManager.categoryTitles));
 				break;
 			case 1:
 				catBG.setNextTapState(screenState.AuthorsScreen);
-				categoryScreen.addScreenElement(new GameObject(position, TextureManager.));
+				categoryScreen.addScreenElement(catBG);
+				categoryScreen.addScreenElement(new GameObject(position, TextureManager.categoryAuthors));
 				break;
 			case 2:
 				catBG.setNextTapState(screenState.GenreScreen);
-				categoryScreen.addScreenElement(new GameObject(position, TextureManager.));
+				categoryScreen.addScreenElement(catBG);
+				categoryScreen.addScreenElement(new GameObject(position, TextureManager.categoryGenres));
 				break;
 			case 3:
 				catBG.setNextTapState(screenState.RecommendedScreen);
-				categoryScreen.addScreenElement(new GameObject(position, TextureManager.));
+				categoryScreen.addScreenElement(catBG);
+				categoryScreen.addScreenElement(new GameObject(position, TextureManager.categoryRecommended));
 				break;
 			case 4:
 				catBG.setNextTapState(screenState.ReadLaterScreen);
-				categoryScreen.addScreenElement(new GameObject(position, TextureManager.));
+				categoryScreen.addScreenElement(catBG);
+				categoryScreen.addScreenElement(new GameObject(position, TextureManager.categoryReadLater));
 				break;
 			case 5:
 				catBG.setNextTapState(screenState.RecentBooksScreen);
-				categoryScreen.addScreenElement(new GameObject(position, TextureManager.));
+				categoryScreen.addScreenElement(catBG);
+				categoryScreen.addScreenElement(new GameObject(position, TextureManager.categoryRecent));
 				break;
 				
 			}
-			categoryScreen.addScreenElement(catBG);	
+				
 		}
 		
 
 		categoryScreen.addScreenElement(bottomSwipeBG);
 
+		titlesScreen.setPreviousScreen(categoryScreen);
+		titlesScreen.setPreviousState(screenState.CategoryScreen);
+		titlesScreen.addScreenElement(bg);
+		titlesScreen.addScreenElement(searchBar);
+		titlesScreen.addScreenElement(bottomSwipeBG);
+		for(int i = 0; i<3;i++){
+			Vector2 position = new Vector2(0,68+72*i);
+			GameObject bookBG = new GameObject(position, TextureManager.bookBG);
+			bookBG.setNextTapState(screenState.ReadingScreen);
+			titlesScreen.addScreenElement(bookBG);
+			switch(i){
+			case 0:				
+				titlesScreen.addScreenElement(new GameObject(position, TextureManager.coverJaneEyre));
+				break;
+			case 1:			
+				titlesScreen.addScreenElement(new GameObject(position, TextureManager.coverLifeOfPi));
+				break;
+			case 2:			
+				titlesScreen.addScreenElement(new GameObject(position, TextureManager.coverPride));
+				break;
+			}
+		}
+		
 		/*
-		titlesScreen	
 		authorsScreen	 
 		genreScreen	 
 		recommendedScreen 
 		readLaterScreen	 
 		recentBooksScreen 
-		searchScreen
-		searchAuthorScreen
+		
 		 */
-
+		GameObject searchBarJane = new GameObject(new Vector2(0,0), TextureManager.searchBarJane);
+		searchBar.setNextTapState(screenState.SearchScreen);
+		
+		searchScreen.addScreenElement(bg);
+		searchScreen.addScreenElement(searchBarJane);
+		searchScreen.addScreenElement(bottomSwipeBG);
+		searchScreen.setPreviousScreen(categoryScreen);
+		
+		searchScreen.setPreviousState(screenState.CategoryScreen);
+		
+		for(int i = 0; i<3;i++){
+			Vector2 position = new Vector2(0,68+72*i);
+			
+			
+			switch(i){
+			case 0:	
+				GameObject bookBG = new GameObject(position, TextureManager.bookBG);
+				bookBG.setNextTapState(screenState.SearchAuthorScreen);
+				searchScreen.addScreenElement(bookBG);
+				searchScreen.addScreenElement(new GameObject(position, TextureManager.sortTitle));				
+				break;
+			case 1:			
+				GameObject bookBG2 = new GameObject(position, TextureManager.bookBG);
+				bookBG2.setNextTapState(screenState.ReadingScreen);
+				searchScreen.addScreenElement(bookBG2);
+				searchScreen.addScreenElement(new GameObject(position, TextureManager.coverJaneEyre));
+				break;
+			case 2:			
+				GameObject bookBG3 = new GameObject(position, TextureManager.bookBG);
+				bookBG3.setNextTapState(screenState.ReadingScreen);
+				searchScreen.addScreenElement(bookBG3);
+				searchScreen.addScreenElement(new GameObject(position, TextureManager.coverPride));
+				break;
+			}
+		}
+		
+		
+		
+		
+		searchAuthorScreen.addScreenElement(bg);
+		searchAuthorScreen.addScreenElement(searchBarJane);
+		searchAuthorScreen.addScreenElement(bottomSwipeBG);
+		searchAuthorScreen.setPreviousScreen(categoryScreen);
+		searchAuthorScreen.setPreviousState(screenState.CategoryScreen);
+		
+		for(int i = 0; i<3;i++){
+			Vector2 position = new Vector2(0,68+72*i);
+			
+			
+			switch(i){
+			case 0:				
+				GameObject bookBG = new GameObject(position, TextureManager.bookBG);
+				bookBG.setNextTapState(screenState.SearchScreen);
+				searchAuthorScreen.addScreenElement(bookBG);
+				searchAuthorScreen.addScreenElement(new GameObject(position, TextureManager.sortAuthor));
+				break;
+			case 1:			
+				GameObject bookBG2 = new GameObject(position, TextureManager.bookBG);
+				bookBG2.setNextTapState(screenState.ReadingScreen);
+				searchAuthorScreen.addScreenElement(bookBG2);
+				searchAuthorScreen.addScreenElement(new GameObject(position, TextureManager.coverJaneEyre));
+				break;
+			case 2:			
+				GameObject bookBG3 = new GameObject(position, TextureManager.bookBG);
+				bookBG3.setNextTapState(screenState.ReadingScreen);
+				searchAuthorScreen.addScreenElement(bookBG3);
+				searchAuthorScreen.addScreenElement(new GameObject(position, TextureManager.coverPride));
+				break;
+			}
+		}
+		
+		
+		
+		
 		currentScreen=categoryScreen;
 	}
 
@@ -127,6 +224,7 @@ public class LibraryScreen extends ReaderScreen {
 			currentScreen=categoryScreen;
 			break;
 		case TitlesScreen:
+			currentScreen=titlesScreen;
 			break;
 		case AuthorsScreen:
 			break;
@@ -139,8 +237,10 @@ public class LibraryScreen extends ReaderScreen {
 		case RecentBooksScreen:
 			break;
 		case SearchScreen:
+			currentScreen=searchScreen;
 			break;
 		case SearchAuthorScreen:
+			currentScreen=searchAuthorScreen;
 			break;
 
 

@@ -2,6 +2,7 @@ package cs.honours.idw.reader.managers;
 
 import java.io.Reader;
 import java.util.ListIterator;
+import java.util.Locale.Category;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -53,6 +54,7 @@ public class ScreenManager {
 
 	public static ReaderScreen currentScreen;
 	
+	public static boolean onPage1 = true;
 	public boolean currentlyReadingSomething = false;
 	public boolean toolbarActive = false;
 
@@ -99,7 +101,7 @@ public class ScreenManager {
 		loggedInScreen.setPreviousScreen(homeScreen);
 		loggedInScreen.setPreviousState(screenState.HomeScreen);
 		loggedInScreen.addScreenElement(bg);//
-		loggedInScreen.addScreenElement(new GameObject(new Vector2(70,60),TextureManager.welcomeMuneeb));
+		loggedInScreen.addScreenElement(new GameObject(new Vector2(90,60),TextureManager.welcomeMuneeb));
 		loggedInScreen.addScreenElement(new GameObject(new Vector2(60,120),TextureManager.loginUserPicture));
 		loggedInScreen.addScreenElement(bottomSwipeBG);
 					
@@ -109,7 +111,7 @@ public class ScreenManager {
 		loginSkippedScreen.setPreviousScreen(homeScreen);
 		loginSkippedScreen.setPreviousState(screenState.HomeScreen);
 		loginSkippedScreen.addScreenElement(bg);//
-		loginSkippedScreen.addScreenElement(new GameObject(new Vector2(70,60),TextureManager.welcomeUser));
+		loginSkippedScreen.addScreenElement(new GameObject(new Vector2(90,60),TextureManager.welcomeUser));
 		loginSkippedScreen.addScreenElement(new GameObject(new Vector2(60,120),TextureManager.loginUserPicture));
 		loginSkippedScreen.addScreenElement(bottomSwipeBG);
 
@@ -144,11 +146,10 @@ public class ScreenManager {
 		
 		
 		readingScreen=new ReaderScreen();
-		GameObject toolbarActivator = new GameObject(new Vector2(0,0), TextureManager.toolbarActivator);
-		toolbarActivator.setNextSwipeLeftState(screenState.ReadingWithToolbar);
-		toolbarActivator.setNextSwipeRightState(screenState.ReadingWithToolbar);
-		readingScreen.addScreenElement(toolbarActivator);
-
+		readingScreen.setPreviousScreen(libraryScreen);
+		readingScreen.setPreviousState(screenState.LibraryScreen);
+		
+	
 	
 		
 		
@@ -188,15 +189,16 @@ public class ScreenManager {
 			System.out.println("CurrentlyReadingScreen");
 			break;			
 		case ReadingScreen:
-			currentlyReadingSomething=true;			
+			currentlyReadingSomething=true;					
+			currentScreen=readingScreen;
 			System.out.println("ReadingScreen");
 			break;
 		case ReadingWithToolbar:	
-			toolbarActive=!toolbarActive;
-			currentState=screenState.ReadingScreen;
-			if(toolbarActive)
+			toolbarActive=!toolbarActive;			
+			if(!toolbarActive){			
 				System.out.println(toolbarActive);
-			System.out.println("ReadingScreen");
+			}
+			System.out.println("ReadingWithToolbar");
 			break;
 		default:
 			if(currentlyReadingSomething){
@@ -205,6 +207,7 @@ public class ScreenManager {
 			}			
 			else {
 				currentScreen=libraryScreen;
+				libraryScreen.currentLibraryState=currentState;
 				libraryScreen.update();
 			}			
 			break;	
@@ -221,16 +224,23 @@ public class ScreenManager {
 		
 		//Same bar, same action, different response and thus different foreground labels
 		if(currentState==screenState.LibraryScreen||currentState==screenState.LoginSkippedScreen||currentState==screenState.LoggedInScreen){
-			GameObject fg = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toolbarActivator);;
+			GameObject fg = new GameObject(new Vector2(0,800-TextureManager.toLibraryBG.getHeight()),TextureManager.toolbarActivator);;
 			if(!currentlyReadingSomething){
 				if(currentState!=screenState.LibraryScreen)
-					fg = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryFG);	
+					fg = new GameObject(new Vector2(0,800-TextureManager.toLibraryBG.getHeight()),TextureManager.toLibraryFG);	
 			}
 			else 
 			{
-				 fg = new GameObject(new Vector2(0,480-TextureManager.toLibraryBG.getHeight()),TextureManager.toLifeOfPiFG);	
+				 fg = new GameObject(new Vector2(0,800-TextureManager.toLibraryBG.getHeight()),TextureManager.toLifeOfPiFG);	
 			}
 			fg.getSprite().draw(spriteBatch);
+		}
+		
+		if(currentState==screenState.ReadingScreen){
+			if(onPage1)
+				readingScreen.addScreenElement(new GameObject(new Vector2(0,0), TextureManager.readPage1));
+			else
+				readingScreen.addScreenElement(new GameObject(new Vector2(0,0), TextureManager.readPage2));
 		}
 			
 				

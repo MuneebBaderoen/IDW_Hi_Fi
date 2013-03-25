@@ -87,14 +87,14 @@ public class PrototypeMain implements ApplicationListener {
 
 		Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
 				(int) viewport.width, (int) viewport.height);
-		System.out.println(viewport);
+		//System.out.println(viewport);
 		if(!Gdx.input.isTouched()){
 			InputManager.isTouchDown=false;
 			//InputManager.currentInputState=null;
 			//
 		}
-		if(InputManager.currentInputState!=null)
-			System.out.println(InputManager.currentInputState);
+		//if(InputManager.currentInputState!=null)
+		//	System.out.println(InputManager.currentInputState);
 
 		if(Gdx.input.isKeyPressed(Keys.BACK)){
 			if(!backKeyDown){

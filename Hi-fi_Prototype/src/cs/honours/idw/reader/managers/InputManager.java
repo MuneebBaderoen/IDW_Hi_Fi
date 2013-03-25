@@ -72,6 +72,10 @@ public class InputManager implements GestureListener{
 			currentInputState=InputState.SwipeRight;
 		else
 			currentInputState=InputState.SwipeLeft;
+		
+		
+		ScreenManager.onPage1=(!ScreenManager.onPage1);
+	
 		screenSwitch(currentInputState);
 
 		return false;
