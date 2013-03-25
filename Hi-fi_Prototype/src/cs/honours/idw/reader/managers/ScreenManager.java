@@ -46,7 +46,7 @@ public class ScreenManager {
 	ReaderScreen currentlyReadingHomeScreen;
 	ReaderScreen loggedInScreen;
 	ReaderScreen loginSkippedScreen;
-	LibraryScreen libraryScreen;
+	public LibraryScreen libraryScreen;
 	ReaderScreen searchScreen;
 	ReaderScreen readingScreen;
 
@@ -146,13 +146,10 @@ public class ScreenManager {
 		
 		
 		readingScreen=new ReaderScreen();
-		readingScreen.setPreviousScreen(libraryScreen);
-		readingScreen.setPreviousState(screenState.LibraryScreen);
+		readingScreen.setPreviousScreen(libraryScreen.categoryScreen);
+		readingScreen.setPreviousState(screenState.CategoryScreen);
 		
 	
-	
-		
-		
 
 
 	}

@@ -99,6 +99,7 @@ public class PrototypeMain implements ApplicationListener {
 		if(Gdx.input.isKeyPressed(Keys.BACK)){
 			if(!backKeyDown){
 				screenManager.toPreviousScreen();
+				screenManager.currentlyReadingSomething=false;
 				backKeyDown=true;
 			}
 		}
